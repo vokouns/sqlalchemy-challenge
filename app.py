@@ -70,9 +70,19 @@ def stations():
 
     return jsonify(stations=stations)
 
-# @app.route("/api/v1.0/tobs")
+@app.route("/api/v1.0/tobs")
+def temp_monthly():
+    one_year = dt.date(2017,8,23) - dt.timedelta(days=365)
 
-# @app.route("/api/v1.0/temp/start")
+    results = session.query(Measurement.tobs).filter(Measurement.station == 'USC00519281').filter(Measurement.date >= one_year).all()
+    
+    session.close()
+
+    temps = list(np.ravel(results))
+
+    return jsonify(temps=temps)
+
+@app.route("/api/v1.0/temp/start")
 
 # @app.route("/api/v1.0/temps/end")
 
